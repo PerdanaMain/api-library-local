@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  user_id       Int      @id @default(autoincrement())
+  role_id       Int
+  user_name     String
+  user_email    String   @unique
+  user_password String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  borrowedBooks borrowedBooks[]
+  Roles         Roles           @relation(fields: [role_id], references: [role_id])
+  Penalties     Penalties[]
+}
+
+model Roles {
+  role_id   Int      @id @default(autoincrement())
+  role_name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Users Users[]
+}
+
+model Books {
+  book_id     Int      @id @default(autoincrement())
+  book_title  String
+  book_author String
+  book_stock  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  borrowedBooks borrowedBooks[]
+}
+
+model borrowedBooks {
+  borrowed_id          Int       @id @default(autoincrement())
+  user_id              Int
+  book_id              Int
+  status_id            Int
+  borrowed_at          DateTime  @default(now())
+  returned_expected_at DateTime
+  returned_at          DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  Users      Users      @relation(fields: [user_id], references: [user_id])
+  Books      Books      @relation(fields: [book_id], references: [book_id])
+  bookStatus bookStatus @relation(fields: [status_id], references: [status_id])
+}
+
+model bookStatus {
+  status_id   Int      @id @default(autoincrement())
+  status_desc String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  borrowedBooks borrowedBooks[]
+}
+
+model Penalties {
+  penalty_id   Int      @id @default(autoincrement())
+  user_id      Int
+  penalty_desc String
+  is_deleted   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  Users Users @relation(fields: [user_id], references: [user_id])
+}

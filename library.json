@@ -1,0 +1,336 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Library API - Eigen",
+    "contact": {}
+  },
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "securityDefinitions": {},
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/v1/login": {
+      "post": {
+        "summary": "Login",
+        "tags": ["Auth"],
+        "operationId": "Login",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/LoginRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/v1/logout": {
+      "delete": {
+        "summary": "Logout",
+        "tags": ["Auth"],
+        "operationId": "Logout",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "default": "Bearer {token}",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/v1/books": {
+      "get": {
+        "summary": "Get Books",
+        "tags": ["Books"],
+        "operationId": "GetBooks",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "default": "Bearer {token}",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/v1/books/{book_id}": {
+      "get": {
+        "summary": "Get Book",
+        "tags": ["Books"],
+        "operationId": "GetBook",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "default": "Bearer {token}",
+            "type": "string"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book data",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/v1/books/borrow": {
+      "post": {
+        "summary": "Borrow Book",
+        "tags": ["Books"],
+        "operationId": "BorrowBook",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "default": "Bearer {token}",
+            "type": "string"
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/BorrowBookRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/v1/books/return/{borrowed_id}": {
+      "put": {
+        "summary": "Return the book",
+        "tags": ["Books"],
+        "operationId": "Returnthebook",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "default": "Bearer {token}",
+            "type": "string"
+          },
+          {
+            "name": "borrowed_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ReturnthebookRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/v1/members": {
+      "get": {
+        "summary": "Get Members",
+        "tags": ["Members"],
+        "operationId": "GetMembers",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/v1/member": {
+      "get": {
+        "summary": "Get Member by JWT",
+        "tags": ["Members"],
+        "operationId": "GetMemberbyJWT",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "default": "Bearer {token}",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/v1": {
+      "get": {
+        "summary": "Root",
+        "tags": ["Misc"],
+        "operationId": "Root",
+        "deprecated": false,
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "LoginRequest": {
+      "title": "LoginRequest",
+      "example": {
+        "user_email": "putri@gmail.com",
+        "user_password": "12345"
+      },
+      "type": "object",
+      "properties": {
+        "user_email": {
+          "type": "string"
+        },
+        "user_password": {
+          "type": "string"
+        }
+      },
+      "required": ["user_email", "user_password"]
+    },
+    "LogoutRequest": {
+      "title": "LogoutRequest",
+      "example": {
+        "user_email": "admin@admin",
+        "user_password": "12345"
+      },
+      "type": "object",
+      "properties": {
+        "user_email": {
+          "type": "string"
+        },
+        "user_password": {
+          "type": "string"
+        }
+      },
+      "required": ["user_email", "user_password"]
+    },
+    "BorrowBookRequest": {
+      "title": "BorrowBookRequest",
+      "example": {
+        "book_id": 1
+      },
+      "type": "object",
+      "properties": {
+        "book_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": ["book_id"]
+    },
+    "ReturnthebookRequest": {
+      "title": "ReturnthebookRequest",
+      "example": {
+        "return_date": "2024-06-10"
+      },
+      "type": "object",
+      "properties": {
+        "return_date": {
+          "type": "string"
+        }
+      },
+      "required": ["return_date"]
+    }
+  },
+  "security": [],
+  "tags": [
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Books"
+    },
+    {
+      "name": "Members"
+    },
+    {
+      "name": "Misc",
+      "description": ""
+    }
+  ]
+}
